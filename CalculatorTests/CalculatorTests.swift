@@ -3,7 +3,7 @@
 //  CalculatorTests
 //
 //  Created by Vitalik Ushakov on 12/3/16.
-//  Copyright © 2016 VItalik Ushakov. All rights reserved.
+//  Copyright © 2016 Vitalik Ushakov. All rights reserved.
 //
 
 import XCTest
@@ -24,6 +24,28 @@ class CalculatorTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        // Dot is Present
+        func testIsDot () {
+            _ = ViewController()
+            let str = "59.0"
+            XCTAssertTrue(ViewController().isDot(str: str))
+        }
+        
+        // Dot is't Present
+        func testIsNotDot () {
+            _ = ViewController()
+            let str = "4535535"
+            XCTAssertFalse(ViewController().isDot(str: str))
+        }
+        
+        func testroundAndViewResult() {
+            _ = ViewController()
+            
+            XCT
+        }
+        
+
     }
     
     func testPerformanceExample() {
@@ -32,5 +54,7 @@ class CalculatorTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+    
     
 }
