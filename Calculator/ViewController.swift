@@ -23,7 +23,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     var errDivisionByZero = false
     
-    var y = 0
     var accuracyNumber = 5
     
     override func viewDidLoad() {
@@ -50,9 +49,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
         let inputExpression = expretionInput.text
         let arrExpression: Array = inputStringToArray(string: inputExpression!)
         let rpn = RPN.init(arrExpression)
-
-
-
         
         let result = String(solveRPN(expression: rpn.rpnOutput))
         print("result = " + result!)
@@ -73,11 +69,12 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
  
     
+    
+    
     @IBAction func digitalPress(_ sender: UIButton) {
         
         
         if newNumber{
-            
             
             if flagDotPress <= accuracyNumber{
                 tmpNumber = tmpNumber + sender.currentTitle!
@@ -147,6 +144,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         }
         print("1 = " + String(firstNumber))
         print("2 = " + String(secondNumber))
+        
         switch operationItem {
             
         case "+": result = String(firstNumber + secondNumber)
@@ -156,18 +154,12 @@ class ViewController: UIViewController, UITextFieldDelegate{
         case "✕": result = String(firstNumber * secondNumber)
             
         case "÷":
+            
             if secondNumber == 0.0 {
                 errDivisionByZero = true
                 //view pop-up window with error
-                
-                let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID") as! PopUpViewController
-                self.addChildViewController(popUpOverVC)
-                
-                popUpOverVC.view.frame = self.view.frame
-                
-                self.view.addSubview(popUpOverVC.view)
-                popUpOverVC.didMove(toParentViewController: self)
-                
+                viewPopUpErrorDevisionByZero()
+
             }else{
                 result = String(firstNumber / secondNumber)
             }
@@ -191,9 +183,8 @@ class ViewController: UIViewController, UITextFieldDelegate{
         return String(round(Double(input) * koeff) / koeff)
     }
     
-    //view pop-up window with error
-    
-/*    func viewErrorDevisionByZero(identifier: String, uiViewControllerName: Pop) {
+    //view pop-up window Division by Zero
+    func viewPopUpErrorDevisionByZero() {
         
         let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID") as! PopUpViewController
         self.addChildViewController(popUpOverVC)
@@ -204,7 +195,20 @@ class ViewController: UIViewController, UITextFieldDelegate{
         popUpOverVC.didMove(toParentViewController: self)
    
     }
-*/
+    
+    //view pop-up window with error
+    func viewPopUpErrorExpression() {
+        
+        let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID102") as! PopUpErrorExpression
+        self.addChildViewController(popUpOverVC)
+        
+        popUpOverVC.view.frame = self.view.frame
+        
+        self.view.addSubview(popUpOverVC.view)
+        popUpOverVC.didMove(toParentViewController: self)
+        
+    }
+    
     
     @IBAction func testButton(_ sender: UIButton) {
         
@@ -238,13 +242,11 @@ class ViewController: UIViewController, UITextFieldDelegate{
                 print(currentValue)
             }
             
-            
             let isNumber = Double(currentValue)
             
             if isNumber != nil {
                 outputStack.append(isNumber!)
             }else {
-                
              
                 tempVar2 = outputStack.removeLast()
                 tempVar1 = outputStack.removeLast()
@@ -256,15 +258,9 @@ class ViewController: UIViewController, UITextFieldDelegate{
                     case "/":
                         if tempVar2 == 0.0 {
                             errDivisionByZero = true
+                            
                             //view pop-up window with error
-                            
-                            let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID") as! PopUpViewController
-                            self.addChildViewController(popUpOverVC)
-                            
-                            popUpOverVC.view.frame = self.view.frame
-                            
-                            self.view.addSubview(popUpOverVC.view)
-                            popUpOverVC.didMove(toParentViewController: self)
+                            viewPopUpErrorDevisionByZero()
                             
                         }else{
                             tmpResult = tempVar1 / tempVar2
@@ -283,23 +279,14 @@ class ViewController: UIViewController, UITextFieldDelegate{
         if outputStack.count != 1 {
            
             //open popUp Window with error
-            let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID102") as! PopUpErrorExpression
-            self.addChildViewController(popUpOverVC)
+            viewPopUpErrorExpression()
             
-            popUpOverVC.view.frame = self.view.frame
-            
-            self.view.addSubview(popUpOverVC.view)
-            popUpOverVC.didMove(toParentViewController: self)
             return ""
             
         }else {
             return "\(outputStack[0])"
         }
     }
-    
-
-    
-    
     
     
     //Convert input expression to array of string

@@ -39,11 +39,21 @@ class CalculatorTests: XCTestCase {
             XCTAssertFalse(ViewController().isDot(str: str))
         }
         
-        func testroundAndViewResult() {
+        func testroundAndViewResultWith5NumberAccuracy() {
             _ = ViewController()
-            
-            XCT
+            let doubleInput = 12345.1234567890
+            let intKoeff = 5
+            let result = ViewController().roundAndViewResult(input: doubleInput, accuracy: intKoeff)
+            XCTAssertTrue(result == "12345.12345")
         }
+        func testroundAndViewResultWith7NumberAccuracy() {
+            _ = ViewController()
+            let doubleInput = 12345.1234567890
+            let intKoeff = 7
+            let result = ViewController().roundAndViewResult(input: doubleInput, accuracy: intKoeff)
+            XCTAssertTrue(result == "12345.1234567")
+        }
+
         
 
     }
