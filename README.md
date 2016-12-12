@@ -10,9 +10,9 @@ The calculator support the basic functions (+, -, *, /) and a field for expressi
 
 Code is designed for Xcode. To build it:
 
-Install Xcode;
-Click on Open Project;
-Select project folder;
+1. Install Xcode;
+2. Click on Open Project;
+3. Select project folder.
 
 ## Licensing
 
