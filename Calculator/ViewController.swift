@@ -132,6 +132,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         secondNumber = 0.0
         newNumber = false
         resultView.text = "0"
+        inputE
         operationItem = ""
         flagDotPress = 0
     }
