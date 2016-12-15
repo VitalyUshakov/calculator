@@ -47,11 +47,13 @@ class RPN {
         var stack = [String]()
         var output = [String]()
         for item in inputArray {
+            print("Item = \(item)")
             switch RPN.operatorPriority(oper: item) {
             case -1: output.append(item)
             case 0: stack.append(item)
             case 4:
                 while let last = stack.last {
+                    
                     if RPN.operatorPriority(oper: last) != 0 {
                         output.append(stack.removeLast())
                     } else {
@@ -66,6 +68,7 @@ class RPN {
                         break
                     }
                 }
+                print("addItem = \(item)")
                 stack.append(item)
             }
         }
@@ -74,7 +77,19 @@ class RPN {
         }
         self.asRPN = output
         self.rpnString = output.joined(separator: " ")
-        self.rpnOutput = output
-       
+        
+        var arrOutput = output
+        arrOutput = arrOutput.filter(){$0 != ""}
+        
+/*        for var arr in 0...arrOutput.count-1 {
+            if String(arrOutput[arr]) == "" {
+                arrOutput.remove(at: arr)
+                arr -= 1
+            }
+        }
+ */
+        print("arr = \(arrOutput)")
+//        self.rpnOutput = output
+       self.rpnOutput = arrOutput
     }
 }

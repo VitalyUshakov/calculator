@@ -41,20 +41,153 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var expretionInput: UITextField! = nil
     
+    
+    
+    
+    
+    
+    func solveRPN(expression: Array<String>) -> String {
+        
+        var inputExp = expression
+        var outputStack = Array<Double>()
+        var currentValue = ""
+        
+        var tempVar1 = Double()
+        var tempVar2 = Double()
+        var tempOperation = String()
+        var unexpectedValue = false
+        var tmpResult = Double()
+        
+        while inputExp.count != 0 {
+            
+            currentValue = inputExp.removeFirst()
+            let isNumber: Double? = Double(currentValue)
+            if isNumber != nil {
+                outputStack.append(isNumber!)
+                //                print("StackAppend \(isNumber)")
+            }else {
+                if outputStack.count >= 2{
+                    tempVar2 = outputStack.removeLast()
+                    tempVar1 = outputStack.removeLast()
+                    tempOperation = currentValue
+                    switch tempOperation {
+                    case "+":
+                        tmpResult = tempVar1 + tempVar2
+                    case "-":
+                        tmpResult = tempVar1 - tempVar2
+                    case "*": tmpResult = tempVar1 * tempVar2
+                    case "/":
+                        if tempVar2 == 0.0 {
+                            errDivisionByZero = true
+                            //view pop-up window with error
+                            viewPopUpErrorDevisionByZero()
+                        }else{
+                            tmpResult = tempVar1 / tempVar2
+                        }
+                    default:
+                        unexpectedValue = true
+                    }
+                    outputStack.append(tmpResult)
+                } else{
+                    break
+                }
+            }
+        }
+        //        print("outputStack = " + String(outputStack[0]))
+        if outputStack.count != 1 || unexpectedValue {
+            //open popUp Window with error
+            viewPopUpErrorExpression()
+            return ""
+        }else {
+            return "\(outputStack[0])"
+        }
+    }
+
+//MARK: inputStringToArray
+    func inputStringToArray(string: String) -> Array<String>{
+        let inputString = Array(string.characters)
+        
+        var arrayOut: [String] = Array<String>()
+        var strFor = ""
+        //        print("input String count")
+        //        print(inputString)
+        
+        for i in 0 ..< inputString.count {
+            
+            //            print(inputString[i])
+            
+            switch inputString[i] {
+            case "(":
+                //don't write null element
+                if strFor != "" {
+                    arrayOut.append(strFor)
+                }
+                arrayOut.append(String(inputString[i]))
+                strFor = ""
+            case ")":
+                if strFor != "" {
+                    arrayOut.append(strFor)
+                }
+                arrayOut.append(String(inputString[i]))
+                strFor = ""
+            case "+":
+                if strFor != "" {
+                    arrayOut.append(strFor)
+                }
+                
+                arrayOut.append(String(inputString[i]))
+                strFor = ""
+            case "-":
+                if strFor != "" {
+                    arrayOut.append(strFor)
+                }
+                
+                arrayOut.append(String(inputString[i]))
+                strFor = ""
+            case "*":
+                if strFor != "" {
+                    arrayOut.append(strFor)
+                }
+                
+                arrayOut.append(String(inputString[i]))
+                strFor = ""
+            case "/":
+                arrayOut.append(strFor)
+                arrayOut.append(String(inputString[i]))
+                strFor = ""
+            case " ": print(strFor)
+            default:
+                strFor = strFor + String(inputString[i])
+                if i == inputString.count - 1 {
+                    arrayOut.append(strFor)
+                }
+            }
+            
+        }
+        return arrayOut
+    }
+    
+    
+    
+    
+    
     //exit from pop up keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         view.endEditing(true)
         
         let inputExpression = expretionInput.text
-        let arrExpression: Array = inputStringToArray(string: inputExpression!)
-        let rpn = RPN.init(arrExpression)
-        
-        let result = String(solveRPN(expression: rpn.rpnOutput))
-        print("result = " + result!)
-        if result != "" {
-            print("result != " + result!)
-            resultView.text = roundAndViewResult(input: Double(result!)!, accuracy: accuracyNumber)
+        if inputExpression != "" {
+            let arrExpression: Array = inputStringToArray(string: inputExpression!)
+            let rpn = RPN.init(arrExpression)
+            print("InputExpression =  \(inputExpression)")
+            print("RPN_OUTPUT =   \(rpn.rpnOutput)")
+            let result = String(solveRPN(expression: rpn.rpnOutput))
+
+            if result != "" {
+
+                resultView.text = roundAndViewResult(input: Double(result!)!, accuracy: accuracyNumber)
+            }
         }
         return false
     }
@@ -132,19 +265,67 @@ class ViewController: UIViewController, UITextFieldDelegate{
         secondNumber = 0.0
         newNumber = false
         resultView.text = "0"
-        inputE
+
         operationItem = ""
         flagDotPress = 0
     }
     
-    @IBAction func viewAnswer(_ sender: UIButton) {
+    
+    
+    func answer() -> String {
         var result = ""
-        
         if newNumber {
             secondNumber = Double(tmpNumber)!
         }
-        print("1 = " + String(firstNumber))
-        print("2 = " + String(secondNumber))
+        
+        switch operationItem {
+            
+        case "+": result = String(firstNumber + secondNumber)
+            
+        case "-": result = String(firstNumber - secondNumber)
+            
+        case "✕": result = String(firstNumber * secondNumber)
+            
+        case "÷":
+            
+            if secondNumber == 0.0 {
+                errDivisionByZero = true
+                //view pop-up window with error
+                viewPopUpErrorDevisionByZero()
+                
+            }else{
+                result = String(firstNumber / secondNumber)
+            }
+            
+        default:break
+            
+        }
+        
+        if !errDivisionByZero{
+//            resultView.text = roundAndViewResult(input: Double(result)!, accuracy: accuracyNumber)
+            result = roundAndViewResult(input: Double(result)!, accuracy: accuracyNumber)
+
+        }
+        errDivisionByZero = false
+        flagDotPress = 0
+        newNumber = false
+        
+        
+    return result
+    }
+    
+    
+    
+    
+    
+    @IBAction func viewAnswer(_ sender: UIButton) {
+    
+        resultView.text = self.answer()
+        /*        var result = ""
+
+        if newNumber {
+            secondNumber = Double(tmpNumber)!
+        }
         
         switch operationItem {
             
@@ -175,9 +356,10 @@ class ViewController: UIViewController, UITextFieldDelegate{
         errDivisionByZero = false
         flagDotPress = 0
         newNumber = false
-    }
+*/
+ }
 
-    
+
     //round result and view
     func roundAndViewResult(input: Double, accuracy: Int) -> String {
         let koeff: Double = pow(10.0, Double(accuracy))
@@ -211,148 +393,8 @@ class ViewController: UIViewController, UITextFieldDelegate{
     }
     
     
-    @IBAction func testButton(_ sender: UIButton) {
-        
-        let inputExpression = expretionInput.text
-        let arrExpression: Array = inputStringToArray(string: inputExpression!)
-        let rpn = RPN.init(arrExpression)
 
-        print(rpn.rpnString)
-        
-        let result = Double(solveRPN(expression: rpn.rpnOutput))
-        
-         resultView.text = roundAndViewResult(input: result!, accuracy: accuracyNumber)
-    }
-
-    func solveRPN(expression: Array<String>) -> String {
-        
-        var inputExp = expression
-        var outputStack = Array<Double>()
-        var currentValue = ""
-        
-        var tempVar1 = Double()
-        var tempVar2 = Double()
-        var tempOperation = String()
-        
-        var tmpResult = Double()
-        
-        while inputExp.count != 0 {
-            
-            currentValue = inputExp.removeFirst()
-            if currentValue == "+" {
-                print(currentValue)
-            }
-            
-            let isNumber = Double(currentValue)
-            
-            if isNumber != nil {
-                outputStack.append(isNumber!)
-            }else {
-             
-                tempVar2 = outputStack.removeLast()
-                tempVar1 = outputStack.removeLast()
-                tempOperation = currentValue
-                switch tempOperation {
-                    case "+": tmpResult = tempVar1 + tempVar2
-                    case "-": tmpResult = tempVar1 - tempVar2
-                    case "*": tmpResult = tempVar1 * tempVar2
-                    case "/":
-                        if tempVar2 == 0.0 {
-                            errDivisionByZero = true
-                            
-                            //view pop-up window with error
-                            viewPopUpErrorDevisionByZero()
-                            
-                        }else{
-                            tmpResult = tempVar1 / tempVar2
-                        }
-                    
-                    default: break
-                }
-                //tmpResult = Double("\(tempVar1) + \(tempOperation) + \(tempVar2)")!
-                print("tmpOperation + \(tempOperation)")
-                outputStack.append(tmpResult)
-                
-            }
-        }
-        print("outputStack = " + String(outputStack[0]))
-        
-        if outputStack.count != 1 {
-           
-            //open popUp Window with error
-            viewPopUpErrorExpression()
-            
-            return ""
-            
-        }else {
-            return "\(outputStack[0])"
-        }
-    }
-    
-    
     //Convert input expression to array of string
     
-    func inputStringToArray(string: String) -> Array<String>{
-        let inputString = Array(string.characters)
- 
-        var arrayOut: [String] = Array<String>()
-        var strFor = ""
-//        print("input String count")
-//        print(inputString)
-        
-        for i in 0 ..< inputString.count {
-            
-            print(inputString[i])
-                
-            switch inputString[i] {
-                case "(":
-                    //don't write null element
-                    if strFor != "" {
-                        arrayOut.append(strFor)
-                    }
-                    arrayOut.append(String(inputString[i]))
-                    strFor = ""
-                case ")":
-                    if strFor != "" {
-                        arrayOut.append(strFor)
-                    }
-                    arrayOut.append(String(inputString[i]))
-                    strFor = ""
-                case "+":
-                    if strFor != "" {
-                        arrayOut.append(strFor)
-                    }
-
-                    arrayOut.append(String(inputString[i]))
-                    strFor = ""
-                case "-":
-                    if strFor != "" {
-                        arrayOut.append(strFor)
-                    }
-
-                    arrayOut.append(String(inputString[i]))
-                    strFor = ""
-                case "*":
-                    if strFor != "" {
-                        arrayOut.append(strFor)
-                    }
-
-                    arrayOut.append(String(inputString[i]))
-                    strFor = ""
-                case "/":
-                    arrayOut.append(strFor)
-                    arrayOut.append(String(inputString[i]))
-                    strFor = ""
-                case " ": print(strFor)
-                default:
-                    strFor = strFor + String(inputString[i])
-                    if i == inputString.count - 1 {
-                        arrayOut.append(strFor)
-                    }
-            }
-            
-        }
-        return arrayOut
-    }
 }
 
