@@ -8,12 +8,6 @@
 
 import Foundation
 
-
-// RPN.swift
-// Convert infix notation to Reverse Polish Notation!
-//
-// Licensed under MIT License. See LICENSE for more info.
-// Copyright (c) 2015, Michał "NeoXant" Kolarczyk.
 class RPN {
     //var asRPN = [String]() // array after convertion to RPN
     
@@ -81,14 +75,8 @@ class RPN {
         var arrOutput = output
         arrOutput = arrOutput.filter(){$0 != ""}
         
-/*        for var arr in 0...arrOutput.count-1 {
-            if String(arrOutput[arr]) == "" {
-                arrOutput.remove(at: arr)
-                arr -= 1
-            }
-        }
- */
-        print("arr = \(arrOutput)")
+
+//        print("arr = \(arrOutput)")
 //        self.rpnOutput = output
        self.rpnOutput = arrOutput
     }

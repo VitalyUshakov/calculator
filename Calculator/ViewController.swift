@@ -198,8 +198,8 @@ class ViewController: UIViewController, UITextFieldDelegate{
     return true
     }
     
-    @IBOutlet weak var resultView: UILabel!
-    
+   
+    @IBOutlet weak var resultView: UITextField!
  
     
     
@@ -290,6 +290,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
             
             if secondNumber == 0.0 {
                 errDivisionByZero = true
+                result = "0.0"
                 //view pop-up window with error
                 viewPopUpErrorDevisionByZero()
                 
@@ -321,42 +322,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
     @IBAction func viewAnswer(_ sender: UIButton) {
     
         resultView.text = self.answer()
-        /*        var result = ""
 
-        if newNumber {
-            secondNumber = Double(tmpNumber)!
-        }
-        
-        switch operationItem {
-            
-        case "+": result = String(firstNumber + secondNumber)
-            
-        case "-": result = String(firstNumber - secondNumber)
-            
-        case "✕": result = String(firstNumber * secondNumber)
-            
-        case "÷":
-            
-            if secondNumber == 0.0 {
-                errDivisionByZero = true
-                //view pop-up window with error
-                viewPopUpErrorDevisionByZero()
-
-            }else{
-                result = String(firstNumber / secondNumber)
-            }
-            
-        default:break
-            
-        }
-        
-        if !errDivisionByZero{
-            resultView.text = roundAndViewResult(input: Double(result)!, accuracy: accuracyNumber)
-        }
-        errDivisionByZero = false
-        flagDotPress = 0
-        newNumber = false
-*/
  }
 
 
