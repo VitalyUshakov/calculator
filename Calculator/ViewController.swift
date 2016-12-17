@@ -42,10 +42,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var expretionInput: UITextField! = nil
     
     
-    
-    
-    
-    
     func solveRPN(expression: Array<String>) -> String {
         
         var inputExp = expression
