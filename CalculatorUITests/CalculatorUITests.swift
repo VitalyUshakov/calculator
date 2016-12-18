@@ -12,7 +12,7 @@ import XCTest
 
 class CalculatorUITests: XCTestCase {
     var app : XCUIApplication!
-
+    var txtField : XCUIElement!
     
     override func setUp() {
         super.setUp()
@@ -25,9 +25,11 @@ class CalculatorUITests: XCTestCase {
         XCUIApplication().launch()
         
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-       app  = XCUIApplication()
-
-           }
+        
+        app  = XCUIApplication()
+        txtField = app.textFields["textField"]
+        
+    }
     
     
     
@@ -200,7 +202,6 @@ class CalculatorUITests: XCTestCase {
     }
 */
     func testCalcFuctionAll(){
-        let txtField = app.textFields["textField"]
 
 //Add
         app.buttons["1"].tap()
@@ -281,7 +282,6 @@ class CalculatorUITests: XCTestCase {
     }
     
     func testExpression(){
-        let txtField = app.textFields["textField"]
         
         app.textFields["inputField"].tap()
      
