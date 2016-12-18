@@ -85,11 +85,13 @@ class ViewController: UIViewController, UITextFieldDelegate{
                     }
                     outputStack.append(tmpResult)
                 } else{
-                    break
+                    viewPopUpErrorExpression()
+                    return ""
                 }
             }
         }
-        //        print("outputStack = " + String(outputStack[0]))
+                print("outputStack = " + String(outputStack[0]))
+        print("outputStack = \(outputStack.count)")
         if outputStack.count != 1 || unexpectedValue {
             //open popUp Window with error
             viewPopUpErrorExpression()
