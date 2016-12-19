@@ -9,12 +9,11 @@
 import Foundation
 
 class RPN {
-    //var asRPN = [String]() // array after convertion to RPN
-    
-    private var asRPN = [String]() // array after convertion to RPN
+    private var asRPN = [String]()  // array after convertion to RPN
     var inputArray = [String]()
-    var rpnString = "" // output string after convertion to RPN
+    var rpnString = ""              // output string after convertion to RPN
     var rpnOutput = [String]()
+    
     static func operatorPriority(oper: String) -> Int {
         switch oper {
         case "(":
@@ -27,7 +26,7 @@ class RPN {
             return 3
         case ")":
             return 4
-        default: // numbers
+        default:                    // numbers
             return -1
         }
     }
@@ -40,14 +39,15 @@ class RPN {
     func toRPN() {
         var stack = [String]()
         var output = [String]()
+        
         for item in inputArray {
-            print("Item = \(item)")
             switch RPN.operatorPriority(oper: item) {
-            case -1: output.append(item)
-            case 0: stack.append(item)
+            case -1:
+                output.append(item)
+            case 0:
+                stack.append(item)
             case 4:
                 while let last = stack.last {
-                    
                     if RPN.operatorPriority(oper: last) != 0 {
                         output.append(stack.removeLast())
                     } else {
@@ -62,7 +62,6 @@ class RPN {
                         break
                     }
                 }
-                print("addItem = \(item)")
                 stack.append(item)
             }
         }
@@ -74,10 +73,7 @@ class RPN {
         
         var arrOutput = output
         arrOutput = arrOutput.filter(){$0 != ""}
-        
 
-//        print("arr = \(arrOutput)")
-//        self.rpnOutput = output
-       self.rpnOutput = arrOutput
+        self.rpnOutput = arrOutput
     }
 }

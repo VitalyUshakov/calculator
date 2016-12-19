@@ -26,154 +26,147 @@ class CalculatorTests: XCTestCase {
         super.tearDown()
     }
     
-//    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    // Dot is Present
+    func testIsDot () {
+        let str = "59.0"
+        XCTAssertTrue(ViewController().isDot(str: str))
+    }
         
-        // Dot is Present
-        func testIsDot () {
-
-            let str = "59.0"
-            XCTAssertTrue(ViewController().isDot(str: str))
-        }
+    // Dot is't Present
+    func testIsNotDot () {
+        let str = "4535535"
+        XCTAssertFalse(ViewController().isDot(str: str))
+    }
         
-        // Dot is't Present
-        func testIsNotDot () {
-
-            let str = "4535535"
-            XCTAssertFalse(ViewController().isDot(str: str))
-        }
-        
-        func testroundAndViewResultWith5NumberAccuracy() {
-            let doubleInput = 12345.1234567890
-            let intKoeff = 5
-            let result = ViewController().roundAndViewResult(input: doubleInput, accuracy: intKoeff)
-            XCTAssertTrue(result == "12345.12346")
-        }
+    func testroundAndViewResultWith5NumberAccuracy() {
+        let doubleInput = 12345.1234567890
+        let intKoeff = 5
+        let result = ViewController().roundAndViewResult(input: doubleInput, accuracy: intKoeff)
+        XCTAssertTrue(result == "12345.12346")
+    }
     
-        func testroundAndViewResultWith7NumberAccuracy() {
-
-            let doubleInput = 12345.1234567890
-            let intKoeff = 7
-            let result = ViewController().roundAndViewResult(input: doubleInput, accuracy: intKoeff)
-            XCTAssertTrue(result == "12345.1234568")
-        }
+    func testroundAndViewResultWith7NumberAccuracy() {
+        let doubleInput = 12345.1234567890
+        let intKoeff = 7
+        let result = ViewController().roundAndViewResult(input: doubleInput, accuracy: intKoeff)
+        XCTAssertTrue(result == "12345.1234568")
+    }
         
 //MARK: TestADD
-        func testAnswerPositiveAdd() {
-            vc.newNumber = false
-            vc.operationItem = "+"
-            vc.firstNumber = 5.0
-            vc.secondNumber = 8.0
-            vc.accuracyNumber = 5
-            let result = vc.answer()
-            XCTAssertTrue(result == "13.0")
-        }
+    func testAnswerPositiveAdd() {
+        vc.newNumber = false
+        vc.operationItem = "+"
+        vc.firstNumber = 5.0
+        vc.secondNumber = 8.0
+        vc.accuracyNumber = 5
+        let result = vc.answer()
+        XCTAssertTrue(result == "13.0")
+    }
     
-        func testAnswerNegativeAdd(){
-            vc.newNumber = false
-            vc.operationItem = "+"
-            vc.firstNumber = 8.0
-            vc.secondNumber = -5.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "3.0")
-        }
+    func testAnswerNegativeAdd() {
+        vc.newNumber = false
+        vc.operationItem = "+"
+        vc.firstNumber = 8.0
+        vc.secondNumber = -5.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "3.0")
+    }
     
-        func testAnswerZeroAdd() {
-            vc.newNumber = false
-            vc.operationItem = "+"
-            vc.firstNumber = 8.0
-            vc.secondNumber = -8.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "0.0")
-        }
+    func testAnswerZeroAdd() {
+        vc.newNumber = false
+        vc.operationItem = "+"
+        vc.firstNumber = 8.0
+        vc.secondNumber = -8.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "0.0")
+    }
     
 //MARK: TestSUB
-        func testAnswerPositiveSub() {
-            vc.newNumber = false
-            vc.operationItem = "-"
-            vc.firstNumber = 8.0
-            vc.secondNumber = 5.0
-            vc.accuracyNumber = 5
-            let result = vc.answer()
-            XCTAssertTrue(result == "3.0")
-        }
+    func testAnswerPositiveSub() {
+        vc.newNumber = false
+        vc.operationItem = "-"
+        vc.firstNumber = 8.0
+        vc.secondNumber = 5.0
+        vc.accuracyNumber = 5
+        let result = vc.answer()
+        XCTAssertTrue(result == "3.0")
+    }
     
-        func testAnswerNegativeSub(){
-            vc.newNumber = false
-            vc.operationItem = "+"
-            vc.firstNumber = -8.0
-            vc.secondNumber = 5.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "-3.0")
-        }
+    func testAnswerNegativeSub() {
+        vc.newNumber = false
+        vc.operationItem = "+"
+        vc.firstNumber = -8.0
+        vc.secondNumber = 5.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "-3.0")
+    }
     
-        func testAnswerZeroSub() {
-            vc.newNumber = false
-            vc.operationItem = "+"
-            vc.firstNumber = 8.0
-            vc.secondNumber = -8.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "0.0")
-        }
+    func testAnswerZeroSub() {
+        vc.newNumber = false
+        vc.operationItem = "+"
+        vc.firstNumber = 8.0
+        vc.secondNumber = -8.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "0.0")
+    }
+    
 //MARK: TestMUL
-        func testAnswerPositiveMul() {
-            vc.newNumber = false
-            vc.operationItem = "✕"
-            vc.firstNumber = 8.0
-            vc.secondNumber = 5.0
-            vc.accuracyNumber = 5
-            let result = vc.answer()
-            XCTAssertTrue(result == "40.0")
-        }
+    func testAnswerPositiveMul() {
+        vc.newNumber = false
+        vc.operationItem = "✕"
+        vc.firstNumber = 8.0
+        vc.secondNumber = 5.0
+        vc.accuracyNumber = 5
+        let result = vc.answer()
+        XCTAssertTrue(result == "40.0")
+    }
     
-        func testAnswerNegativeMul(){
-            vc.newNumber = false
-            vc.operationItem = "✕"
-            vc.firstNumber = 8.0
-            vc.secondNumber = -5.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "-40.0")
-        }
+    func testAnswerNegativeMul() {
+        vc.newNumber = false
+        vc.operationItem = "✕"
+        vc.firstNumber = 8.0
+        vc.secondNumber = -5.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "-40.0")
+    }
     
-        func testAnswerZeroMul() {
-            vc.newNumber = false
-            vc.operationItem = "✕"
-            vc.firstNumber = 8.0
-            vc.secondNumber = 0.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "0.0")
-        }
+    func testAnswerZeroMul() {
+        vc.newNumber = false
+        vc.operationItem = "✕"
+        vc.firstNumber = 8.0
+        vc.secondNumber = 0.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "0.0")
+    }
 
 //MARK: TestDiv
-        func testAnswerPositiveDiv() {
-            vc.newNumber = false
-            vc.operationItem = "÷"
-            vc.firstNumber = 5.0
-            vc.secondNumber = 3.0
-            vc.accuracyNumber = 5
-            let result = vc.answer()
-            XCTAssertTrue(result == "1.66667")
-        }
+    func testAnswerPositiveDiv() {
+        vc.newNumber = false
+        vc.operationItem = "÷"
+        vc.firstNumber = 5.0
+        vc.secondNumber = 3.0
+        vc.accuracyNumber = 5
+        let result = vc.answer()
+        XCTAssertTrue(result == "1.66667")
+    }
     
-        func testAnswerNegativeDiv(){
-            vc.newNumber = false
-            vc.operationItem = "÷"
-            vc.firstNumber = 5.0
-            vc.secondNumber = -3.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "-1.66667")
-        }
+    func testAnswerNegativeDiv() {
+        vc.newNumber = false
+        vc.operationItem = "÷"
+        vc.firstNumber = 5.0
+        vc.secondNumber = -3.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "-1.66667")
+    }
     
-        func testAnswerZeroDiv() {
-            vc.newNumber = false
-            vc.operationItem = "÷"
-            vc.firstNumber = 8.0
-            vc.secondNumber = 0.0
-            let result = vc.answer()
-            XCTAssertTrue(result == "0.0")
-        }
-    
+    func testAnswerZeroDiv() {
+        vc.newNumber = false
+        vc.operationItem = "÷"
+        vc.firstNumber = 8.0
+        vc.secondNumber = 0.0
+        let result = vc.answer()
+        XCTAssertTrue(result == "0.0")
+    }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

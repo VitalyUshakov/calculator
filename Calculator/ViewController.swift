@@ -13,25 +13,24 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     var firstNumber:Double = 0.0
     var secondNumber:Double = 0.0
-    
-    var flagDotPress = 0
-    var tmpNumber = ""
+    var accuracyNumber = 5
     var operationItem = ""
     
     var newNumber = false
+    
+    var flagDotPress = 0
+    var tmpNumber = ""
+    
     var inputString = ""
     
     var errDivisionByZero = false
     
-    var accuracyNumber = 5
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
         expretionInput.delegate = self;
     }
-
-
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -40,10 +39,9 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     
     @IBOutlet weak var expretionInput: UITextField! = nil
-    
+    @IBOutlet weak var resultView: UITextField!
     
     func solveRPN(expression: Array<String>) -> String {
-        
         var inputExp = expression
         var outputStack = Array<Double>()
         var currentValue = ""
@@ -55,27 +53,31 @@ class ViewController: UIViewController, UITextFieldDelegate{
         var tmpResult = Double()
         
         while inputExp.count != 0 {
-            
             currentValue = inputExp.removeFirst()
             let isNumber: Double? = Double(currentValue)
+            
             if isNumber != nil {
                 outputStack.append(isNumber!)
-                //                print("StackAppend \(isNumber)")
             }else {
+                
                 if outputStack.count >= 2{
                     tempVar2 = outputStack.removeLast()
                     tempVar1 = outputStack.removeLast()
                     tempOperation = currentValue
+                    
                     switch tempOperation {
                     case "+":
                         tmpResult = tempVar1 + tempVar2
                     case "-":
                         tmpResult = tempVar1 - tempVar2
-                    case "*": tmpResult = tempVar1 * tempVar2
+                    case "*":
+                        tmpResult = tempVar1 * tempVar2
                     case "/":
+                        
                         if tempVar2 == 0.0 {
                             errDivisionByZero = true
                             //view pop-up window with error
+                            
                             viewPopUpErrorDevisionByZero()
                         }else{
                             tmpResult = tempVar1 / tempVar2
@@ -90,10 +92,9 @@ class ViewController: UIViewController, UITextFieldDelegate{
                 }
             }
         }
-                print("outputStack = " + String(outputStack[0]))
-        print("outputStack = \(outputStack.count)")
         if outputStack.count != 1 || unexpectedValue {
-            //open popUp Window with error
+            
+            //open popUp Window with error            
             viewPopUpErrorExpression()
             return ""
         }else {
@@ -104,19 +105,12 @@ class ViewController: UIViewController, UITextFieldDelegate{
 //MARK: inputStringToArray
     func inputStringToArray(string: String) -> Array<String>{
         let inputString = Array(string.characters)
-        
         var arrayOut: [String] = Array<String>()
         var strFor = ""
-        //        print("input String count")
-        //        print(inputString)
         
         for i in 0 ..< inputString.count {
-            
-            //            print(inputString[i])
-            
             switch inputString[i] {
             case "(":
-                //don't write null element
                 if strFor != "" {
                     arrayOut.append(strFor)
                 }
@@ -132,21 +126,18 @@ class ViewController: UIViewController, UITextFieldDelegate{
                 if strFor != "" {
                     arrayOut.append(strFor)
                 }
-                
                 arrayOut.append(String(inputString[i]))
                 strFor = ""
             case "-":
                 if strFor != "" {
                     arrayOut.append(strFor)
                 }
-                
                 arrayOut.append(String(inputString[i]))
                 strFor = ""
             case "*":
                 if strFor != "" {
                     arrayOut.append(strFor)
                 }
-                
                 arrayOut.append(String(inputString[i]))
                 strFor = ""
             case "/":
@@ -160,30 +151,21 @@ class ViewController: UIViewController, UITextFieldDelegate{
                     arrayOut.append(strFor)
                 }
             }
-            
         }
         return arrayOut
     }
     
-    
-    
-    
-    
     //exit from pop up keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         view.endEditing(true)
-        
         let inputExpression = expretionInput.text
+        
         if inputExpression != "" {
             let arrExpression: Array = inputStringToArray(string: inputExpression!)
             let rpn = RPN.init(arrExpression)
-            print("InputExpression =  \(inputExpression)")
-            print("RPN_OUTPUT =   \(rpn.rpnOutput)")
             let result = String(solveRPN(expression: rpn.rpnOutput))
 
             if result != "" {
-
                 resultView.text = roundAndViewResult(input: Double(result!)!, accuracy: accuracyNumber)
             }
         }
@@ -192,21 +174,12 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     //clean text field befor insert a new value
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    textField.text = ""
-    return true
+        textField.text = ""
+        return true
     }
     
-   
-    @IBOutlet weak var resultView: UITextField!
- 
-    
-    
-    
     @IBAction func digitalPress(_ sender: UIButton) {
-        
-        
         if newNumber{
-            
             if flagDotPress <= accuracyNumber{
                 tmpNumber = tmpNumber + sender.currentTitle!
                 resultView.text = tmpNumber
@@ -223,7 +196,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
 
     //check string for Dot
     func isDot (str: String) -> Bool {
-        
         var dotPresent = false
         
         for i in str.characters{
@@ -234,15 +206,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         return dotPresent
     }
     
-    func addDot(result: String, inputDot: String) -> String {
-       
-        
-        return ""
-    }
-    
-    
     @IBAction func dotPress(_ sender: UIButton) {
-        
         if !isDot(str: resultView.text!){
             tmpNumber = tmpNumber + sender.currentTitle!
             resultView.text = tmpNumber
@@ -251,7 +215,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
     }
     
     @IBAction func operationPress(_ sender: UIButton) {
-        
         operationItem = sender.currentTitle!
         newNumber = false
         firstNumber = Double(resultView.text!)!
@@ -263,66 +226,49 @@ class ViewController: UIViewController, UITextFieldDelegate{
         secondNumber = 0.0
         newNumber = false
         resultView.text = "0"
-
         operationItem = ""
         flagDotPress = 0
     }
     
-    
-    
     func answer() -> String {
         var result = ""
+        
         if newNumber {
             secondNumber = Double(tmpNumber)!
         }
-        
         switch operationItem {
-            
-        case "+": result = String(firstNumber + secondNumber)
-            
-        case "-": result = String(firstNumber - secondNumber)
-            
-        case "✕": result = String(firstNumber * secondNumber)
-            
+        case "+":
+            result = String(firstNumber + secondNumber)
+        case "-":
+            result = String(firstNumber - secondNumber)
+        case "✕":
+            result = String(firstNumber * secondNumber)
         case "÷":
-            
             if secondNumber == 0.0 {
                 errDivisionByZero = true
                 result = "0.0"
                 //view pop-up window with error
-                viewPopUpErrorDevisionByZero()
                 
+                viewPopUpErrorDevisionByZero()
             }else{
                 result = String(firstNumber / secondNumber)
             }
-            
-        default:break
-            
+        default:
+            break
         }
         
         if !errDivisionByZero{
-//            resultView.text = roundAndViewResult(input: Double(result)!, accuracy: accuracyNumber)
             result = roundAndViewResult(input: Double(result)!, accuracy: accuracyNumber)
-
         }
         errDivisionByZero = false
         flagDotPress = 0
         newNumber = false
-        
-        
     return result
     }
     
-    
-    
-    
-    
     @IBAction func viewAnswer(_ sender: UIButton) {
-    
         resultView.text = self.answer()
-
- }
-
+    }
 
     //round result and view
     func roundAndViewResult(input: Double, accuracy: Int) -> String {
@@ -332,7 +278,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     //view pop-up window Division by Zero
     func viewPopUpErrorDevisionByZero() {
-        
         let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID") as! PopUpViewController
         self.addChildViewController(popUpOverVC)
         
@@ -340,12 +285,10 @@ class ViewController: UIViewController, UITextFieldDelegate{
         
         self.view.addSubview(popUpOverVC.view)
         popUpOverVC.didMove(toParentViewController: self)
-   
     }
     
     //view pop-up window with error
-    func viewPopUpErrorExpression() {
-        
+    func viewPopUpErrorExpression() {        
         let popUpOverVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "sbPopUpID102") as! PopUpErrorExpression
         self.addChildViewController(popUpOverVC)
         
@@ -353,12 +296,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
         
         self.view.addSubview(popUpOverVC.view)
         popUpOverVC.didMove(toParentViewController: self)
-        
     }
-    
-    
-
-    //Convert input expression to array of string
-    
 }
 
